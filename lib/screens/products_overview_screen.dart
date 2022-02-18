@@ -1,74 +1,73 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import 'package:shop_app/providers/product.dart';
-import 'package:shop_app/widgets/app_drawer.dart';
-import 'package:shop_app/widgets/products_grid.dart';
+
+import './cart_screen.dart';
+import '../providers/cart.dart';
+import '../widgets/app_drawer.dart';
+import '../widgets/badge.dart';
+import '../widgets/products_grid.dart';
 
 enum FilterOptions {
-  Favourites,
+  Favorites,
   All,
 }
 
-class ProductOverviewScreen extends StatefulWidget {
-  const ProductOverviewScreen({Key? key}) : super(key: key);
-
+class ProductsOverviewScreen extends StatefulWidget {
   @override
-  State<ProductOverviewScreen> createState() => _ProductOverviewScreenState();
+  _ProductsOverviewScreenState createState() => _ProductsOverviewScreenState();
 }
 
-class _ProductOverviewScreenState extends State<ProductOverviewScreen> {
-  bool _showOnlyFavourite = false;
+class _ProductsOverviewScreenState extends State<ProductsOverviewScreen> {
+  var _showOnlyFavorites = false;
+
   @override
   Widget build(BuildContext context) {
-    final productContainer = Provider.of<Products>(context);
     return Scaffold(
       appBar: AppBar(
-        title: const Text('MyShop'),
-        actions: [
+        title: Text('MyShop'),
+        actions: <Widget>[
           PopupMenuButton(
-              onSelected: (FilterOptions selectedValue) {
-                setState(() {
-                  if (selectedValue == FilterOptions.Favourites) {
-                    // productContainer.showFavouriteOnly();
-                    _showOnlyFavourite = true;
-                  } else {
-                    // productContainer.showAll();
-                    _showOnlyFavourite = false;
-                  }
-                });
-              },
-              icon: const Icon(
-                Icons.more_vert,
+            onSelected: (FilterOptions selectedValue) {
+              setState(() {
+                if (selectedValue == FilterOptions.Favorites) {
+                  _showOnlyFavorites = true;
+                } else {
+                  _showOnlyFavorites = false;
+                }
+              });
+            },
+            icon: Icon(
+              Icons.more_vert,
+            ),
+            itemBuilder: (_) => [
+              PopupMenuItem(
+                child: Text('Only Favorites'),
+                value: FilterOptions.Favorites,
               ),
-              itemBuilder: (_) => [
-                    const PopupMenuItem(
-                      child: Text('Only Favourites'),
-                      value: FilterOptions.Favourites,
-                    ),
-                    const PopupMenuItem(
-                      child: Text('Show all'),
-                      value: FilterOptions.All,
-                    )
-                  ]),
-          // Consumer<dir.Cart>(
-          //   builder: (_, cartData, ch) => Expanded(
-          //       child: Badge(
-          //           child: ch as Widget, value: cartData.itemCount as String)),
-          //   child: Expanded(
-          //     child: IconButton(
-          //       icon: const Icon(
-          //         Icons.add_shopping_cart,
-          //       ),
-          //       onPressed: () {
-          //         Navigator.of(context).pushNamed(CartScreen.routeName);
-          //       },
-          //     ),
-          //   ),
-          // )
+              PopupMenuItem(
+                child: Text('Show All'),
+                value: FilterOptions.All,
+              ),
+            ],
+          ),
+          Consumer<Cart>(
+            builder: (_, cart, ch) => Badge(
+              child: ch as Widget,
+              value: cart.itemCount.toString(),
+            ),
+            child: IconButton(
+              icon: Icon(
+                Icons.shopping_cart,
+              ),
+              onPressed: () {
+                Navigator.of(context).pushNamed(CartScreen.routeName);
+              },
+            ),
+          ),
         ],
       ),
       drawer: AppDrawer(),
-      body: ProductsGrid(_showOnlyFavourite),
+      body: ProductsGrid(_showOnlyFavorites),
     );
   }
 }
