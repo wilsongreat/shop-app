@@ -1,0 +1,55 @@
+{
+  "project_info": {
+    "project_number": "570848253396",
+    "project_id": "cafia-bm",
+    "storage_bucket": "cafia-bm.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:570848253396:android:fa4d9736fe1224baa9f241",
+        "android_client_info": {
+          "package_name": "com.cafia.app"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "570848253396-35tpdsoks7g19qjrjgdh6sv4jnvqjbk1.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.cafia.app",
+            "certificate_hash": "0ef19a2bc2776300bafb79adb49de5f8291d50be"
+          }
+        },
+        {
+          "client_id": "570848253396-rqd6ort7pa19hmm78a5u4lmmca2551gm.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.cafia.app",
+            "certificate_hash": "ec68c2fc79a3e22c3a2199d05ece376b0b098910"
+          }
+        },
+        {
+          "client_id": "570848253396-l6nvsvd07mhnttvcopqo3njefd6ac40s.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBhWK60Gbf8i9q748N2p8FvFqtWFyE4emc"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "570848253396-l6nvsvd07mhnttvcopqo3njefd6ac40s.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

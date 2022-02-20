@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'package:shop_app/providers/products.dart';
 
 import './cart_screen.dart';
 import '../providers/cart.dart';
@@ -19,12 +20,30 @@ class ProductsOverviewScreen extends StatefulWidget {
 
 class _ProductsOverviewScreenState extends State<ProductsOverviewScreen> {
   var _showOnlyFavorites = false;
+  var _isInit = true;
+  var _isLoading = false;
+  @override
+  void didChangeDependencies() {
+    // TODO: implement didChangeDependencies
+    if (_isInit) {
+      setState(() {
+        _isLoading = true;
+      });
+      Provider.of<Products>(context).fetchAndSetProoduct().then((_) {
+        setState(() {
+          _isLoading = false;
+        });
+      });
+      _isInit = false;
+    }
+    super.didChangeDependencies();
+  }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('MyShop'),
+        title: const Text('MyShop'),
         actions: <Widget>[
           PopupMenuButton(
             onSelected: (FilterOptions selectedValue) {
@@ -36,15 +55,15 @@ class _ProductsOverviewScreenState extends State<ProductsOverviewScreen> {
                 }
               });
             },
-            icon: Icon(
+            icon: const Icon(
               Icons.more_vert,
             ),
             itemBuilder: (_) => [
-              PopupMenuItem(
+              const PopupMenuItem(
                 child: Text('Only Favorites'),
                 value: FilterOptions.Favorites,
               ),
-              PopupMenuItem(
+              const PopupMenuItem(
                 child: Text('Show All'),
                 value: FilterOptions.All,
               ),
@@ -56,7 +75,7 @@ class _ProductsOverviewScreenState extends State<ProductsOverviewScreen> {
               value: cart.itemCount.toString(),
             ),
             child: IconButton(
-              icon: Icon(
+              icon: const Icon(
                 Icons.shopping_cart,
               ),
               onPressed: () {
@@ -67,7 +86,11 @@ class _ProductsOverviewScreenState extends State<ProductsOverviewScreen> {
         ],
       ),
       drawer: AppDrawer(),
-      body: ProductsGrid(_showOnlyFavorites),
+      body: _isLoading
+          ? Center(
+              child: CircularProgressIndicator(),
+            )
+          : ProductsGrid(_showOnlyFavorites),
     );
   }
 }
