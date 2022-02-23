@@ -73,12 +73,12 @@ class _TermsAndConditionsState extends State<TermsAndConditions>
                           padding:
                               const EdgeInsets.only(left: 5, right: 5, top: 10),
                           child: Column(
-                            children: [
+                            children: const [
                               SpanTexts(
                                 index: '1. ',
                                 header: 'Introduction',
                                 details:
-                                    '      Welcome to CAFIA INC ("Company", "we", "our", "us")!These Terms of Service (“Terms, “Terms of Service”) govern your use of our website located at www.cafia.app (together or individually “Service”) operated by CAFIA INC.Our Privacy Policy also governs your use of our Service and explains how we collect, safeguard and disclose information that results from your use of our web pages.Your agreement with us includes these Terms and our Privacy Policy ("Agreements"). You acknowledge that you have read and understood Agreements, and agree to be bound of them.If you do not agree with (or cannot comply with) these agreements, then you may not use the Service, but please let us know by emailing at support@cafia.app so we can try to find a solution. These Terms apply to all visitors, users and others who wish to access or use Service.',
+                                    'Welcome to CAFIA INC ("Company", "we", "our", "us")!These Terms of Service (“Terms, “Terms of Service”) govern your use of our website located at www.cafia.app (together or individually “Service”) operated by CAFIA INC.Our Privacy Policy also governs your use of our Service and explains how we collect, safeguard and disclose information that results from your use of our web pages.Your agreement with us includes these Terms and our Privacy Policy ("Agreements"). You acknowledge that you have read and understood Agreements, and agree to be bound of them.If you do not agree with (or cannot comply with) these agreements, then you may not use the Service, but please let us know by emailing at support@cafia.app so we can try to find a solution. These Terms apply to all visitors, users and others who wish to access or use Service.',
                               ),
                               SpanTexts(
                                 index: '2. ',

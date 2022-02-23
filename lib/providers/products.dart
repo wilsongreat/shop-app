@@ -2,6 +2,7 @@ import 'dart:convert';
 
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
+import 'package:shop_app/models/http_exception.dart';
 
 import './product.dart';
 
@@ -67,14 +68,18 @@ class Products with ChangeNotifier {
   //   notifyListeners();
   // }
 
-  Future<void> fetchAndSetProoduct() async {
+  Future<void> fetchAndSetProduct() async {
     var url = Uri.parse(
         'https://shop-app-29a2b-default-rtdb.firebaseio.com/products.json');
     try {
       final response = await http.get(url);
       print(json.decode(response.body));
       final extractedData = json.decode(response.body) as Map<String, dynamic>;
+      if (extractedData == null) {
+        return;
+      }
       final List<Product> loadedProducts = [];
+
       extractedData.forEach((prodId, prodData) {
         loadedProducts.add(Product(
             id: prodId,
@@ -101,7 +106,7 @@ class Products with ChangeNotifier {
             'description': product.description,
             'imageUrl': product.imageUrl,
             'price': product.price,
-            'isFavourite': product.isFavorite
+            'isFavorite': product.isFavorite
           }));
       print(json.decode(response.body));
       final newProduct = Product(
@@ -141,12 +146,21 @@ class Products with ChangeNotifier {
     }
   }
 
+//optimistic Updating
   Future<void> deleteProduct(String id) async {
     var url = Uri.parse(
         'https://shop-app-29a2b-default-rtdb.firebaseio.com/products/$id.json');
-
-    http.delete(url);
-    _items.removeWhere((prod) => prod.id == id);
+    final existingProductIndex = _items.indexWhere((prod) => prod.id == id);
+    dynamic existingProduct = _items[existingProductIndex];
+    _items.removeAt(existingProductIndex);
     notifyListeners();
+    var response = await http.delete(url);
+    if (response.statusCode >= 400) {
+      _items.insert(existingProductIndex, existingProduct);
+      notifyListeners();
+      throw HttpException('Could not delete product');
+      print(response.statusCode);
+    }
+    existingProduct = null;
   }
 }
