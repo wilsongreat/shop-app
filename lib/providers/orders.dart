@@ -19,15 +19,25 @@ class OrderItem {
 
 class Orders with ChangeNotifier {
   List<OrderItem> _orders = [];
+  late final String authToken;
+  String? userId;
 
   List<OrderItem> get orders {
     return [..._orders];
   }
 
+  void update(authTk, items, userIds) {
+    _orders = items;
+    authToken = authTk;
+    userId = userIds;
+    print(authTk);
+    notifyListeners();
+  }
+
 //This future function extracts data from the cart screen or list and adds it to the Orders list
   Future<void> fetchAndSetOrders() async {
     final url = Uri.parse(
-        'https://shop-app-29a2b-default-rtdb.firebaseio.com/orders.json');
+        'https://shop-app1-433db-default-rtdb.firebaseio.com/orders/$userId.json?auth=$authToken');
     final response = await http.get(url);
     final List<OrderItem> loadedOrders = [];
     final extractedData = json.decode(response.body) as Map<String, dynamic>;
@@ -49,13 +59,13 @@ class Orders with ChangeNotifier {
     });
     _orders = loadedOrders.reversed.toList();
     notifyListeners();
-    print(response.body);
+    // print(response.body);
   }
 
 //this future function adds Order item from the cart screen after the order button has been tapped
   Future<void> addOrder(List<CartItem> cartProducts, double total) async {
     final url = Uri.parse(
-        'https://shop-app-29a2b-default-rtdb.firebaseio.com/orders.json');
+        'https://shop-app1-433db-default-rtdb.firebaseio.com/orders/$userId.json?auth=$authToken');
     final timeStamp = DateTime.now();
     final response = await http.post(url,
         body: json.encode({
